@@ -3,37 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmony Hub</title>
+    <title>HarmonyHub - Your Music Space</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* General Resets and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        /* General Styles */
         body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
             overflow-x: hidden;
             min-height: 100vh;
+            background: linear-gradient(45deg, #ff007f, #00ffcc, #ffcc00, #7f00ff, #007fff, #ff7f00);
+            background-size: 600% 600%;
+            animation: gradientAnimation 30s ease infinite;
             display: flex;
             flex-direction: column;
-            position: relative; /* For animated background */
-        }
-
-        body::before { /* Animated Background */
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #ff007f, #00ffc3, #007bff, #ff0000, #ffff00, #ff7f00, #7f00ff, #00ffff, #ff00ff, #3333ff);
-            background-size: 400% 400%;
-            animation: gradientAnimation 30s ease infinite;
         }
 
         @keyframes gradientAnimation {
@@ -42,72 +26,312 @@
             100% { background-position: 0% 50%; }
         }
 
-        button {
-            cursor: pointer;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-weight: bold;
+        .hidden {
+            display: none !important;
         }
 
-        button:hover {
+        .smoothTransition {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, max-height 0.5s ease-in-out;
+        }
+
+        /* Buttons */
+        .appButton {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 5px;
+        }
+
+        .appButton:hover {
             background-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="date"],
-        select {
-            width: 100%;
+        .appButtonIcon {
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: #fff;
+            border: none;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        input[type="file"] {
-            margin-bottom: 15px;
-            color: #fff;
+        .appButtonIcon:hover {
+            background-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Utility Classes */
-        .hidden { display: none !important; }
-        .flexCenter { display: flex; justify-content: center; align-items: center; }
 
-        /* Auth Screen (Banner, Login/Register Buttons) */
-        .authScreen {
-            min-height: 100vh;
+        /* Landing Page */
+        .landingView {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
+            min-height: 100vh;
             padding: 20px;
-            background-color: rgba(0,0,0,0.3); /* Slight dimming for banner text visibility */
-        }
-        .authScreen h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        .authScreen p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        .authButtons button {
-            margin: 0 10px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            box-sizing: border-box;
         }
 
-        /* Auth Forms (Login/Register) */
-        .formContainer {
+        .landingBanner {
+            margin-bottom: 30px;
+        }
+
+        .landingBanner h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .landingBanner p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Auth Forms */
+        .authFormsContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+
+        .authFormsContainer.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .authForm {
+            background-color: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .authForm h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .authForm label {
+            display: block;
+            margin-bottom: 5px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .authForm input[type="text"],
+        .authForm input[type="email"],
+        .authForm input[type="password"],
+        .authForm input[type="date"],
+        .authForm select,
+        .authForm input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .authForm input[type="file"] {
+            padding: 3px;
+        }
+
+        .authForm .formActions {
+            text-align: center;
+        }
+        .authForm .toggleFormLink {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #00ffcc;
+            cursor: pointer;
+        }
+        .authForm .errorMessage {
+            color: #ff4d4d;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+
+        /* Main App View */
+        .mainAppView {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .appHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .profileArea {
+            cursor: pointer;
+        }
+
+        .userProfileImage {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+        }
+
+        .desktopNav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .desktopNav li {
+            margin-left: 25px;
+        }
+
+        .desktopNav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+        .desktopNav a:hover, .desktopNav a.active {
+            color: #00ffcc;
+        }
+
+
+        .hamburgerIcon {
+            display: none; /* Hidden on desktop */
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mainContent {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto; /* For scrollable content */
+        }
+        .contentSection {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
+        /* Mobile Navigation (Bottom Bar) */
+        .mobileNav {
+            display: none; /* Hidden on desktop */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            padding: 10px 0;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 999;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .mobileNav a {
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 12px;
+            flex-grow: 1;
+        }
+        .mobileNav a i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        .mobileNav a:hover, .mobileNav a.active {
+            color: #00ffcc;
+        }
+
+        /* Mobile Hamburger Menu (Slide-in) */
+        .mobileMenu {
+            position: fixed;
+            top: 0;
+            right: -300px; /* Start off-screen */
+            width: 280px;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+        .mobileMenu.open {
+            right: 0;
+        }
+        .mobileMenuNavClose {
+            text-align: right;
+            font-size: 24px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .mobileMenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .mobileMenu li {
+            margin-bottom: 20px;
+        }
+        .mobileMenu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3em;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .mobileMenu a:hover, .mobileMenu a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: #00ffcc;
+        }
+
+
+        /* Profile Edit Modal */
+        .profileEditModal {
             position: fixed;
             top: 0;
             left: 0;
@@ -115,330 +339,201 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-            z-index: 1000;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1005; /* Higher than auth forms */
         }
-        .formContainer.active {
+        .profileEditModal.visible {
             opacity: 1;
             visibility: visible;
         }
-        .authForm {
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-        .authForm h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .authForm .closeButton {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            font-size: 1.5rem;
-            color: #fff;
-        }
-
-        /* Main Application Wrapper */
-        .appWrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            padding-top: 70px; /* Space for fixed header */
-        }
-
-        /* Header (Desktop and Mobile Top) */
-        .appHeader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 900;
-        }
-        .profileIconContainer img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.5);
-        }
-
-        /* Desktop Navbar */
-        .desktopNavbar {
-            display: none; /* Hidden by default, shown on desktop */
-        }
-        .desktopNavbar ul {
-            list-style: none;
-            display: flex;
-        }
-        .desktopNavbar li {
-            margin-left: 20px;
-        }
-        .desktopNavbar a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            padding: 10px;
-            transition: color 0.3s ease;
-        }
-        .desktopNavbar a:hover, .desktopNavbar a.active {
-            color: #00ffc3;
-        }
-
-        /* Mobile Bottom Navbar & Hamburger */
-        .mobileHamburgerButton {
-            display: block; /* Shown by default, hidden on desktop */
-            font-size: 1.5rem;
-            background: none;
-            color: #fff;
-            padding: 5px;
-        }
-        .mobileBottomNavbar {
-            display: none; /* Hidden by default, shown on mobile */
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            z-index: 900;
-        }
-        .mobileBottomNavbar.active { /* This is for the menu itself, not the bar */
-             /* Styles for the opened menu - if it's a separate element */
-        }
-        .mobileNavMenu {
-            position: fixed;
-            left: -100%; /* Start off-screen */
-            top: 0;
-            width: 70%;
-            max-width: 280px;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px);
-            padding-top: 70px; /* Align with header */
-            transition: left 0.3s ease-in-out;
-            z-index: 890; /* Below header */
-        }
-        .mobileNavMenu.open {
-            left: 0;
-        }
-        .mobileNavMenu ul {
-            list-style: none;
-            padding: 20px;
-        }
-        .mobileNavMenu li a {
-            display: block;
-            padding: 15px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .mobileNavMenu li a:hover, .mobileNavMenu li a.active {
-            background-color: rgba(255,255,255,0.1);
-            color: #00ffc3;
-        }
-
-
-        /* Profile Modal */
-        .profileModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-            z-index: 1000;
-        }
-        .profileModal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .profileModalContent {
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+        .profileEditModalContent {
+            background-color: rgba(20,20,30,0.9);
             padding: 30px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        .profileModalContent h2 {
+        .profileEditModalContent h2 {
+            text-align: center;
             margin-bottom: 20px;
         }
-        .profileModalContent .closeButton {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            font-size: 1.5rem;
-            color: #fff;
+        .profileEditModalContent label {
+            display: block;
+            margin-bottom: 5px;
+            color: rgba(255,255,255,0.8);
         }
-        .profileModalContent img.profilePreview {
+        .profileEditModalContent input[type="text"],
+        .profileEditModalContent input[type="date"],
+        .profileEditModalContent select,
+        .profileEditModalContent input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .profileEditModalContent .currentProfilePic {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin-bottom: 15px;
-            display: block;
             object-fit: cover;
-        }
-
-        /* Content Sections */
-        .contentSection {
-            flex-grow: 1;
-            padding: 20px;
-            display: none; /* Hidden by default, shown by JS */
-        }
-        .contentSection.active {
+            margin: 10px auto;
             display: block;
         }
-        .contentSection h2 {
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.8rem;
+        .profileEditModalActions {
+            text-align: right;
+            margin-top: 20px;
         }
 
         /* Home View - Music Player */
+        .homeViewContent .noMusicPrompt {
+            text-align: center;
+            padding: 50px 20px;
+            animation: pulseAnimation 2s infinite;
+        }
+        .homeViewContent .noMusicPrompt h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .homeViewContent .noMusicPrompt p {
+            color: rgba(255,255,255,0.7);
+        }
+        @keyframes pulseAnimation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         .musicPlayerContainer {
-            background-color: rgba(0,0,0,0.4);
-            padding: 20px;
-            border-radius: 10px;
             max-width: 450px;
             margin: 20px auto;
-            text-align: center;
+            background-color: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .musicCover {
+        .musicPlayerAlbumArt {
             width: 100%;
             max-width: 300px;
             height: auto;
             aspect-ratio: 1 / 1;
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin: 0 auto 15px auto;
+            display: block;
         }
-        .musicInfo h3 { /* Music Name */
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+        .musicPlayerInfo h3 { /* Song Title */
+            font-size: 1.4em;
+            margin: 0 0 5px 0;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .musicInfo p { /* Artist Name */
-            font-size: 1rem;
-            color: #ccc;
-            margin-bottom: 15px;
+        .musicPlayerInfo p { /* Artist Name */
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            margin: 0 0 15px 0;
         }
-        .musicProgress {
+        .musicPlayerProgress {
             width: 100%;
             height: 8px;
             background-color: rgba(255,255,255,0.2);
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 5px;
-            overflow: hidden;
+            overflow: hidden; /* Ensure inner bar stays within rounded corners */
         }
-        .musicProgressBar {
+        .musicPlayerProgressBar {
             width: 0%;
             height: 100%;
-            background-color: #00ffc3;
-            border-radius: 4px;
-            transition: width 0.1s linear; /* Smooth progress */
+            background-color: #00ffcc;
+            border-radius: 4px; /* Match parent for smooth look */
+            transition: width 0.1s linear; /* Smooth progress update */
         }
-        .timeDisplay {
+        .musicPlayerTime {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-            color: #bbb;
-            margin-bottom: 20px;
-        }
-        .musicControls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .musicControls button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.8rem;
-            margin: 0 15px;
-            padding: 10px;
-        }
-        .musicControls .playPauseButton {
-            font-size: 2.5rem; /* Larger play/pause */
-        }
-        .musicControls button:hover {
-            color: #00ffc3;
-            transform: scale(1.1);
-        }
-
-        .noMusicMessage {
-            text-align: center;
-            padding: 50px 20px;
-            animation: fadeInPulse 2s infinite alternate;
-        }
-        .noMusicMessage i {
-            font-size: 3rem;
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.6);
             margin-bottom: 15px;
-            color: #00ffc3;
         }
-        @keyframes fadeInPulse {
-            from { opacity: 0.7; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1.02); }
-        }
-
-        /* Music List (below player or in playlists) */
-        .musicList {
-            margin-top: 30px;
-        }
-        .musicListItem {
+        .musicPlayerControls {
             display: flex;
+            justify-content: space-around;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-        .musicListItem:hover, .musicListItem.playing {
-            background-color: rgba(0, 255, 195, 0.1);
-        }
-        .musicListItem img {
+        .musicPlayerControls .playButton {
+            font-size: 28px; /* Larger play button */
             width: 50px;
             height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 15px;
         }
-        .musicListItemInfo h4 { font-size: 1rem; }
-        .musicListItemInfo p { font-size: 0.8rem; color: #ccc; }
+
+        /* Music List (for Home, Search results, Playlist songs) */
+        .musicList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .musicListItem {
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .musicListItem:hover {
+            transform: translateY(-5px);
+            background-color: rgba(0,0,0,0.5);
+        }
+        .musicListItem img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .musicListItemTitle {
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+        .musicListItemArtist {
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
 
         /* Music Add View */
-        .musicAddForm label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ddd;
+        .musicAddViewContent form label, .playlistsViewContent form label {
+            margin-top: 10px;
+        }
+        .musicAddViewContent form input, .musicAddViewContent form select,
+        .playlistsViewContent form input {
+             width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background-color: rgba(255,255,255,0.1);
+            color: white;
         }
 
         /* Playlists View */
@@ -448,409 +543,449 @@
             gap: 20px;
         }
         .playlistItem {
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(0,0,0,0.4);
             padding: 20px;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: background-color 0.3s ease;
         }
         .playlistItem:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 255, 195, 0.2);
+            background-color: rgba(0,0,0,0.6);
         }
-        .playlistItem i {
-            font-size: 2.5rem;
+        .playlistItem i { /* Icon for playlist */
+            font-size: 3em;
             margin-bottom: 10px;
-            color: #00ffc3;
+            color: #00ffcc;
         }
-        .createPlaylistButton {
-            display: block;
-            margin: 20px auto;
-            width: fit-content;
+        .playlistItem h4 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .noPlaylistsPrompt {
+            text-align: center;
+            padding: 50px 20px;
         }
 
+
         /* Search View */
-        .searchContainer {
-            display: flex;
+        .searchViewContent input[type="search"] {
+            width: calc(100% - 22px);
+            padding: 12px;
             margin-bottom: 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1em;
         }
-        .searchContainer input {
-            flex-grow: 1;
-            margin-bottom: 0;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .searchContainer button {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            background-color: #00ffc3;
-            color: #111;
-        }
-        .searchResults {
-            /* Uses .musicList and .musicListItem styles */
+        .searchResultsContainer {
+            margin-top: 20px;
         }
 
 
         /* Responsive Design */
-
-        /* Mobile First - styles above are predominantly mobile-friendly */
-
-        /* Desktop Styles (min-width: 769px) */
-        @media (min-width: 769px) {
-            .authScreen h1 { font-size: 4rem; }
-            .authForm { padding: 40px; }
-
-            .appWrapper {
-                flex-direction: row; /* Sidebar and content side-by-side potentially, or just header */
-                padding-top: 70px; /* Header height */
-                padding-left: 0; /* Reset if a fixed sidebar was planned */
+        @media (max-width: 768px) {
+            .appHeader {
+                padding: 10px 15px;
             }
-
-            .desktopNavbar {
-                display: flex; /* Show desktop navbar */
+            .desktopNav {
+                display: none; /* Hide desktop nav on mobile */
             }
-            .mobileHamburgerButton {
-                display: none; /* Hide hamburger on desktop */
+            .hamburgerIcon {
+                display: block; /* Show hamburger on mobile */
             }
-            .mobileBottomNavbar {
-                display: none; /* Hide mobile bottom bar */
+            .mobileNav {
+                display: flex; /* Show mobile bottom nav */
             }
-             .mobileNavMenu {
-                display: none; /* Ensure mobile slide-out menu is hidden */
+            .mainContent {
+                padding: 15px;
+                padding-bottom: 70px; /* Space for fixed bottom nav */
             }
-
-            .contentSection {
-                padding: 30px 40px; /* More padding on desktop */
+            .musicList {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
             }
-            .contentSection h2 {
-                 text-align: left; /* Align section titles to left on desktop */
-            }
-
             .musicPlayerContainer {
-                /* Maybe center it on a wider page or integrate differently */
-                 margin: 30px auto; /* Can remain centered */
+                margin: 10px auto;
+                padding: 15px;
             }
-
             .playlistGrid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Larger playlist items */
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
-
-        /* Specific adjustments for smaller mobiles if needed */
         @media (max-width: 480px) {
-            .authScreen h1 { font-size: 2.5rem; }
-            .authButtons button { padding: 10px 20px; font-size: 1rem; }
-            .musicControls button { margin: 0 10px; font-size: 1.5rem; }
-            .musicControls .playPauseButton { font-size: 2rem; }
+            .landingBanner h1 {
+                font-size: 2.2em;
+            }
+            .authForm {
+                padding: 20px;
+            }
+            .userProfileImage {
+                width: 40px;
+                height: 40px;
+            }
+            .musicList {
+                grid-template-columns: repeat(2, 1fr); /* Simpler 2-column layout on small screens */
+                gap: 10px;
+            }
+             .musicListItemTitle {
+                font-size: 0.85em;
+            }
+            .musicListItemArtist {
+                font-size: 0.7em;
+            }
+            .musicPlayerControls .appButtonIcon {
+                font-size: 16px;
+                width: 35px;
+                height: 35px;
+            }
+            .musicPlayerControls .playButton {
+                font-size: 24px;
+                width: 45px;
+                height: 45px;
+            }
         }
 
     </style>
 </head>
 <body>
 
-    <div id="authScreen" class="authScreen">
-        <h1>Welcome to Harmony Hub</h1>
-        <p>Your personal music universe. Login or Register to dive in.</p>
-        <div class="authButtons">
-            <button id="showLoginButton">Login</button>
-            <button id="showRegisterButton">Register</button>
+    <div id="landingView" class="landingView">
+        <div class="landingBanner">
+            <h1>Welcome to HarmonyHub</h1>
+            <p>Your personal music streaming experience.</p>
+        </div>
+        <div>
+            <button id="showLoginBtn" class="appButton">Login</button>
+            <button id="showRegisterBtn" class="appButton">Register</button>
         </div>
     </div>
 
-    <div id="loginFormContainer" class="formContainer">
-        <form id="loginForm" class="authForm">
-            <button type="button" class="closeButton" data-target-form="loginFormContainer">&times;</button>
+    <div id="authFormsContainer" class="authFormsContainer">
+        <form id="loginForm" class="authForm hidden">
             <h2>Login</h2>
-            <input type="email" id="loginEmail" placeholder="Email" required>
-            <input type="password" id="loginPassword" placeholder="Password" required>
-            <button type="submit">Login</button>
-            <p id="loginError" style="color: red; margin-top: 10px; text-align:center;"></p>
-        </form>
-    </div>
-
-    <div id="registerFormContainer" class="formContainer">
-        <form id="registerForm" class="authForm">
-            <button type="button" class="closeButton" data-target-form="registerFormContainer">&times;</button>
-            <h2>Register</h2>
-            <input type="text" id="registerFullName" placeholder="Full Name" required>
-            <input type="text" id="registerUsername" placeholder="Username" required>
-            <input type="email" id="registerEmail" placeholder="Email" required>
-            <input type="password" id="registerPassword" placeholder="Password (min. 6 chars)" required>
-            <label for="registerGender">Gender:</label>
-            <select id="registerGender" required>
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-                <option value="prefer_not_to_say">Prefer not to say</option>
-            </select>
-            <label for="registerDob">Date of Birth:</label>
-            <input type="date" id="registerDob" required>
-            <label for="registerProfilePic">Profile Picture (Optional):</label>
-            <input type="file" id="registerProfilePic" accept="image/*">
-            <button type="submit">Register</button>
-            <p id="registerError" style="color: red; margin-top: 10px; text-align:center;"></p>
-        </form>
-    </div>
-
-
-    <div id="appWrapper" class="appWrapper hidden">
-        <header class="appHeader">
-            <div class="profileIconContainer">
-                <img id="headerProfilePic" src="https://via.placeholder.com/40" alt="Profile">
+            <div id="loginError" class="errorMessage"></div>
+            <div>
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required>
             </div>
-            <nav class="desktopNavbar">
-                <ul>
-                    <li><a href="#" class="navLink active" data-section="homeSection">Home</a></li>
-                    <li><a href="#" class="navLink" data-section="musicAddSection">Add Music</a></li>
-                    <li><a href="#" class="navLink" data-section="searchSection">Search</a></li>
-                    <li><a href="#" class="navLink" data-section="playlistsSection">Playlists</a></li>
-                    <li><a href="#" id="logoutButton">Logout</a></li>
-                </ul>
-            </nav>
-            <button class="mobileHamburgerButton" id="mobileHamburgerButton">
-                <i class="fas fa-bars"></i>
-            </button>
-        </header>
+            <div>
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <div class="formActions">
+                <button type="submit" class="appButton">Login</button>
+            </div>
+            <p class="toggleFormLink" data-form="registerForm">Don't have an account? Register</p>
+        </form>
 
-        <nav class="mobileNavMenu" id="mobileNavMenu">
-            <ul>
-                 <li><a href="#" class="navLink active" data-section="homeSection">Home</a></li>
-                 <li><a href="#" class="navLink" data-section="musicAddSection">Add Music</a></li>
-                 <li><a href="#" class="navLink" data-section="searchSection">Search</a></li>
-                 <li><a href="#" class="navLink" data-section="playlistsSection">Playlists</a></li>
-                 <li><a href="#" id="mobileLogoutButton">Logout</a></li>
-            </ul>
-        </nav>
-
-
-        <main id="mainContent">
-            <section id="homeSection" class="contentSection active">
-                <div id="homeMusicContent">
-                    </div>
-            </section>
-
-            <section id="musicAddSection" class="contentSection">
-                <h2>Add New Music</h2>
-                <form id="musicAddForm" class="musicAddForm">
-                    <label for="musicName">Music Title:</label>
-                    <input type="text" id="musicName" required>
-
-                    <label for="musicArtist">Artist Name:</label>
-                    <input type="text" id="musicArtist">
-
-                    <label for="musicFileUrl">Music Audio URL:</label>
-                    <input type="text" id="musicFileUrl" placeholder="Enter direct URL to audio file" required>
-                    <label for="musicCoverImage">Cover Image:</label>
-                    <input type="file" id="musicCoverImage" accept="image/*" required>
-                    <img id="musicCoverPreview" src="#" alt="Cover Preview" style="max-width: 100px; display: none; margin-top:10px;">
-
-
-                    <label for="musicPlaylist">Add to Playlist:</label>
-                    <select id="musicPlaylist">
-                        <option value="">Select Playlist</option>
-                        </select>
-                    <input type="text" id="newPlaylistName" placeholder="Or, type new playlist name">
-
-                    <button type="submit">Add Music</button>
-                    <p id="musicAddError" style="color: red; margin-top: 10px;"></p>
-                    <p id="musicAddSuccess" style="color: lightgreen; margin-top: 10px;"></p>
-                </form>
-            </section>
-
-            <section id="searchSection" class="contentSection">
-                <h2>Search Music</h2>
-                <div class="searchContainer">
-                    <input type="text" id="searchInput" placeholder="Search for songs, artists...">
-                    <button id="searchButton"><i class="fas fa-search"></i></button>
-                </div>
-                <div id="searchResults" class="musicList">
-                    <p>Start typing to search for music across all users.</p>
-                </div>
-            </section>
-
-            <section id="playlistsSection" class="contentSection">
-                <h2>Your Playlists</h2>
-                <button id="showCreatePlaylistFormButton" class="createPlaylistButton"><i class="fas fa-plus-circle"></i> Create New Playlist</button>
-                <form id="createPlaylistForm" class="hidden" style="margin-bottom:20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px;">
-                    <input type="text" id="newPlaylistTitle" placeholder="New Playlist Title" required>
-                    <button type="submit">Create Playlist</button>
-                </form>
-                <div id="playlistGrid" class="playlistGrid">
-                    <p id="noPlaylistsMessage">You don't have any playlists yet. Create one!</p>
-                </div>
-            </section>
-        </main>
-
-        </div> <div id="profileModal" class="profileModal">
-        <div class="profileModalContent">
-            <button type="button" class="closeButton" data-target-form="profileModal">&times;</button>
-            <h2>Edit Profile</h2>
-            <form id="profileEditForm">
-                <img id="profileModalPreview" src="https://via.placeholder.com/100" alt="Profile Preview" class="profilePreview">
-                <label for="profileEditFullName">Full Name:</label>
-                <input type="text" id="profileEditFullName" required>
-                <label for="profileEditUsername">Username:</label>
-                <input type="text" id="profileEditUsername" required>
-                <label for="profileEditGender">Gender:</label>
-                <select id="profileEditGender" required>
+        <form id="registerForm" class="authForm hidden">
+            <h2>Register</h2>
+            <div id="registerError" class="errorMessage"></div>
+            <div>
+                <label for="registerFullName">Full Name</label>
+                <input type="text" id="registerFullName" required>
+            </div>
+            <div>
+                <label for="registerUsername">Username</label>
+                <input type="text" id="registerUsername" required>
+            </div>
+            <div>
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" required>
+            </div>
+            <div>
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" required>
+            </div>
+            <div>
+                <label for="registerGender">Gender</label>
+                <select id="registerGender">
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                     <option value="prefer_not_to_say">Prefer not to say</option>
                 </select>
-                <label for="profileEditDob">Date of Birth:</label>
-                <input type="date" id="profileEditDob" required>
-                <label for="profileEditProfilePic">New Profile Picture (Optional):</label>
-                <input type="file" id="profileEditProfilePic" accept="image/*">
-                <button type="submit">Save Changes</button>
-                <p id="profileEditError" style="color: red; margin-top: 10px;"></p>
-                <p id="profileEditSuccess" style="color: lightgreen; margin-top: 10px;"></p>
-            </form>
+            </div>
+            <div>
+                <label for="registerDob">Date of Birth (DD/MM/YYYY)</label>
+                <input type="date" id="registerDob" required>
+            </div>
+            <div>
+                <label for="registerProfilePic">Profile Picture</label>
+                <input type="file" id="registerProfilePic" accept="image/*">
+            </div>
+            <div class="formActions">
+                <button type="submit" class="appButton">Register</button>
+            </div>
+            <p class="toggleFormLink" data-form="loginForm">Already have an account? Login</p>
+        </form>
+    </div>
+
+
+    <div id="mainAppView" class="mainAppView hidden">
+        <header class="appHeader">
+            <div id="profileArea" class="profileArea">
+                <img id="userProfileImage" src="https://via.placeholder.com/50" alt="User Profile">
+            </div>
+            <nav id="desktopNav" class="desktopNav">
+                <ul>
+                    <li><a href="#" class="navLink active" data-view="homeViewContent">Home</a></li>
+                    <li><a href="#" class="navLink" data-view="musicAddViewContent">Add Music</a></li>
+                    <li><a href="#" class="navLink" data-view="searchViewContent">Search</a></li>
+                    <li><a href="#" class="navLink" data-view="playlistsViewContent">Playlists</a></li>
+                    <li><a href="#" id="logoutButton">Logout</a></li>
+                </ul>
+            </nav>
+            <div id="hamburgerIcon" class="hamburgerIcon">
+                <i class="fas fa-bars"></i>
+            </div>
+        </header>
+
+        <div id="mobileMenu" class="mobileMenu">
+            <div id="mobileMenuNavClose" class="mobileMenuNavClose"><i class="fas fa-times"></i></div>
+            <ul>
+                 <li><a href="#" class="navLink mobileNavLink active" data-view="homeViewContent">Home</a></li>
+                 <li><a href="#" class="navLink mobileNavLink" data-view="musicAddViewContent">Add Music</a></li>
+                 <li><a href="#" class="navLink mobileNavLink" data-view="searchViewContent">Search</a></li>
+                 <li><a href="#" class="navLink mobileNavLink" data-view="playlistsViewContent">Playlists</a></li>
+                 <li><a href="#" id="logoutButtonMobile">Logout</a></li>
+            </ul>
+        </div>
+
+
+        <main id="mainContent" class="mainContent">
+            <section id="homeViewContent" class="contentSection">
+                <h2>My Music</h2>
+                <div id="homeMusicPlayer" class="musicPlayerContainer hidden">
+                    <img id="playerAlbumArt" src="https://via.placeholder.com/300" alt="Album Art" class="musicPlayerAlbumArt">
+                    <div class="musicPlayerInfo">
+                        <h3 id="playerSongTitle">Song Title</h3>
+                        <p id="playerArtistName">Artist Name</p>
+                    </div>
+                    <div id="playerProgress" class="musicPlayerProgress">
+                        <div id="playerProgressBar" class="musicPlayerProgressBar"></div>
+                    </div>
+                    <div class="musicPlayerTime">
+                        <span id="playerCurrentTime">0:00</span>
+                        <span id="playerTotalTime">0:00</span>
+                    </div>
+                    <div class="musicPlayerControls">
+                        <button id="prevTrackBtn" class="appButtonIcon"><i class="fas fa-step-backward"></i></button>
+                        <button id="playPauseBtn" class="appButtonIcon playButton"><i class="fas fa-play"></i></button>
+                        <button id="nextTrackBtn" class="appButtonIcon"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                </div>
+                <div id="homeMusicList" class="musicList">
+                    </div>
+                <div id="homeNoMusicPrompt" class="noMusicPrompt hidden">
+                    <h3>Your music library is empty!</h3>
+                    <p>Go to "Add Music" to start building your collection, or create a playlist.</p>
+                    <button class="appButton" id="promptGoToAddMusic">Add Music</button>
+                </div>
+            </section>
+
+            <section id="musicAddViewContent" class="contentSection hidden">
+                <h2>Add New Music</h2>
+                <form id="musicAddForm">
+                    <div>
+                        <label for="addSongTitle">Song Title (Required)</label>
+                        <input type="text" id="addSongTitle" required>
+                    </div>
+                    <div>
+                        <label for="addArtistName">Artist Name</label>
+                        <input type="text" id="addArtistName">
+                    </div>
+                    <div>
+                        <label for="addAlbumArt">Album Art (Image File, Required)</label>
+                        <input type="file" id="addAlbumArt" accept="image/*" required>
+                    </div>
+                    <div>
+                        <label for="addMusicFile">Music File (Audio File, Required)</label>
+                        <input type="file" id="addMusicFile" accept="audio/*" required>
+                    </div>
+                    <div>
+                        <label for="addSongPlaylist">Add to Playlist:</label>
+                        <select id="addSongPlaylist">
+                            </select>
+                        <span>or </span><button type="button" id="showCreatePlaylistFromMusicAdd" class="appButton">Create New Playlist</button>
+                    </div>
+                    <div id="musicAddMessage" class="errorMessage" style="margin-top:10px;"></div>
+                    <button type="submit" class="appButton" style="margin-top:15px;">Upload Music</button>
+                </form>
+            </section>
+
+            <section id="searchViewContent" class="contentSection hidden">
+                <h2>Search Music</h2>
+                <input type="search" id="searchInput" placeholder="Search for songs, artists...">
+                <div id="searchResultsContainer" class="musicList">
+                    </div>
+                <p id="noSearchResults" class="hidden">No songs found matching your search.</p>
+            </section>
+
+            <section id="playlistsViewContent" class="contentSection hidden">
+                <h2>My Playlists</h2>
+                <button id="showCreatePlaylistBtn" class="appButton">Create New Playlist</button>
+                <form id="createPlaylistForm" class="hidden" style="margin-top: 15px; background-color: rgba(0,0,0,0.2); padding:15px; border-radius:8px;">
+                    <label for="newPlaylistName">Playlist Name:</label>
+                    <input type="text" id="newPlaylistName" required>
+                    <button type="submit" class="appButton">Save Playlist</button>
+                    <button type="button" id="cancelCreatePlaylistBtn" class="appButton">Cancel</button>
+                    <div id="playlistFormMessage" class="errorMessage" style="margin-top:10px;"></div>
+                </form>
+                <div id="playlistGrid" class="playlistGrid" style="margin-top:20px;">
+                    </div>
+                 <div id="noPlaylistsPrompt" class="noPlaylistsPrompt hidden">
+                    <h3>You don't have any playlists yet.</h3>
+                    <p>Create one to organize your music!</p>
+                </div>
+                <div id="playlistSongsView" class="hidden" style="margin-top:20px;">
+                    <h3 id="playlistSongsTitle"></h3>
+                    <button id="backToPlaylistsBtn" class="appButton">Back to Playlists</button>
+                    <div id="playlistSongsList" class="musicList" style="margin-top:15px;">
+                        </div>
+                </div>
+            </section>
+        </main>
+
+        <nav id="mobileNav" class="mobileNav">
+            <a href="#" class="navLink mobileNavLink active" data-view="homeViewContent"><i class="fas fa-home"></i> Home</a>
+            <a href="#" class="navLink mobileNavLink" data-view="musicAddViewContent"><i class="fas fa-plus-circle"></i> Add</a>
+            <a href="#" class="navLink mobileNavLink" data-view="searchViewContent"><i class="fas fa-search"></i> Search</a>
+            <a href="#" class="navLink mobileNavLink" data-view="playlistsViewContent"><i class="fas fa-list-music"></i> Playlists</a>
+        </nav>
+
+        <div id="profileEditModal" class="profileEditModal">
+            <div class="profileEditModalContent">
+                <h2>Edit Profile</h2>
+                <form id="profileEditForm">
+                    <img id="editCurrentProfilePic" src="https://via.placeholder.com/100" alt="Current Profile Picture" class="currentProfilePic">
+                    <div>
+                        <label for="editFullName">Full Name</label>
+                        <input type="text" id="editFullName" required>
+                    </div>
+                    <div>
+                        <label for="editUsername">Username</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+                    <div>
+                        <label for="editGender">Gender</label>
+                        <select id="editGender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="editDob">Date of Birth</label>
+                        <input type="date" id="editDob" required>
+                    </div>
+                    <div>
+                        <label for="editProfilePicFile">New Profile Picture (Optional)</label>
+                        <input type="file" id="editProfilePicFile" accept="image/*">
+                    </div>
+                    <div id="profileEditMessage" class="errorMessage"></div>
+                    <div class="profileEditModalActions">
+                        <button type="button" id="cancelProfileEdit" class="appButton">Cancel</button>
+                        <button type="submit" class="appButton">Save Changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <audio id="audioPlayer"></audio>
 
-
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-        import {
-            getAuth,
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-            signOut,
-            onAuthStateChanged,
-            updateProfile
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import {
-            getDatabase,
-            ref,
-            set,
-            get,
-            child,
-            push,
-            update,
-            query,
-            orderByChild,
-            equalTo,
-            onValue
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, child, update, push, serverTimestamp, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDJVgACPnByrvJBrrpSqPbyjztKIYLCMg0", // REPLACE WITH YOURS
-            authDomain: "react-c2da8.firebaseapp.com",       // REPLACE WITH YOURS
-            databaseURL: "https://react-c2da8-default-rtdb.firebaseio.com", // REPLACE WITH YOURS
-            projectId: "react-c2da8",                       // REPLACE WITH YOURS
-            storageBucket: "react-c2da8.firebasestorage.app", // REPLACE WITH YOURS
-            messagingSenderId: "700327720805",              // REPLACE WITH YOURS
-            appId: "1:700327720805:web:bbe2cf35b08d3f5d04538c", // REPLACE WITH YOURS
-            measurementId: "G-2PKHCWP06M"                   // REPLACE WITH YOURS (Optional)
+            apiKey: "AIzaSyDJVgACPnByrvJBrrpSqPbyjztKIYLCMg0", // REPLACE WITH YOUR ACTUAL KEY if different
+            authDomain: "react-c2da8.firebaseapp.com",
+            databaseURL: "https://react-c2da8-default-rtdb.firebaseio.com",
+            projectId: "react-c2da8",
+            storageBucket: "react-c2da8.firebasestorage.app",
+            messagingSenderId: "700327720805",
+            appId: "1:700327720805:web:bbe2cf35b08d3f5d04538c",
+            measurementId: "G-2PKHCWP06M"
         };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app); // Optional
         const auth = getAuth(app);
         const database = getDatabase(app);
+        const storage = getStorage(app);
 
         // Cloudinary Configuration
-        const cloudinaryCloudName = "dbiltdpxh"; // REPLACE WITH YOUR CLOUD NAME
-        const cloudinaryPreset = "farhadsultan";  // REPLACE WITH YOUR UNSIGNED UPLOAD PRESET
+        const cloudinaryPreset = "farhadsultan";
+        const cloudinaryCloudName = "dbiltdpxh";
+        const cloudinaryUploadURL = `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`;
 
         // DOM Elements
-        const authScreen = document.getElementById('authScreen');
-        const appWrapper = document.getElementById('appWrapper');
-        const mainContent = document.getElementById('mainContent');
-
-        const showLoginButton = document.getElementById('showLoginButton');
-        const showRegisterButton = document.getElementById('showRegisterButton');
-        const loginFormContainer = document.getElementById('loginFormContainer');
-        const registerFormContainer = document.getElementById('registerFormContainer');
+        const landingView = document.getElementById('landingView');
+        const authFormsContainer = document.getElementById('authFormsContainer');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
-        const loginError = document.getElementById('loginError');
-        const registerError = document.getElementById('registerError');
-
-        const headerProfilePic = document.getElementById('headerProfilePic');
-        const profileModal = document.getElementById('profileModal');
-        const profileEditForm = document.getElementById('profileEditForm');
-        const profileModalPreview = document.getElementById('profileModalPreview');
-        const profileEditFullName = document.getElementById('profileEditFullName');
-        const profileEditUsername = document.getElementById('profileEditUsername');
-        const profileEditGender = document.getElementById('profileEditGender');
-        const profileEditDob = document.getElementById('profileEditDob');
-        const profileEditError = document.getElementById('profileEditError');
-        const profileEditSuccess = document.getElementById('profileEditSuccess');
-
-
-        const logoutButton = document.getElementById('logoutButton');
-        const mobileLogoutButton = document.getElementById('mobileLogoutButton');
-        const mobileHamburgerButton = document.getElementById('mobileHamburgerButton');
-        const mobileNavMenu = document.getElementById('mobileNavMenu');
-
-        const navLinks = document.querySelectorAll('.navLink');
+        const mainAppView = document.getElementById('mainAppView');
+        const userProfileImage = document.getElementById('userProfileImage');
+        const profileArea = document.getElementById('profileArea');
+        const profileEditModal = document.getElementById('profileEditModal');
         const contentSections = document.querySelectorAll('.contentSection');
+        const navLinks = document.querySelectorAll('.navLink'); // All nav links (desktop, mobile, modal)
+        const hamburgerIcon = document.getElementById('hamburgerIcon');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuNavClose = document.getElementById('mobileMenuNavClose');
 
-        const homeMusicContent = document.getElementById('homeMusicContent');
+        const homeMusicPlayer = document.getElementById('homeMusicPlayer');
+        const playerAlbumArt = document.getElementById('playerAlbumArt');
+        const playerSongTitle = document.getElementById('playerSongTitle');
+        const playerArtistName = document.getElementById('playerArtistName');
+        const playerProgress = document.getElementById('playerProgress');
+        const playerProgressBar = document.getElementById('playerProgressBar');
+        const playerCurrentTime = document.getElementById('playerCurrentTime');
+        const playerTotalTime = document.getElementById('playerTotalTime');
+        const prevTrackBtn = document.getElementById('prevTrackBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const nextTrackBtn = document.getElementById('nextTrackBtn');
         const audioPlayer = document.getElementById('audioPlayer');
+        const homeMusicList = document.getElementById('homeMusicList');
+        const homeNoMusicPrompt = document.getElementById('homeNoMusicPrompt');
+        const promptGoToAddMusic = document.getElementById('promptGoToAddMusic');
 
-        const musicAddForm = document.getElementById('musicAddForm');
-        const musicNameInput = document.getElementById('musicName');
-        const musicArtistInput = document.getElementById('musicArtist');
-        const musicFileUrlInput = document.getElementById('musicFileUrl');
-        const musicCoverImageInput = document.getElementById('musicCoverImage');
-        const musicCoverPreview = document.getElementById('musicCoverPreview');
-        const musicPlaylistSelect = document.getElementById('musicPlaylist');
-        const newPlaylistNameInput = document.getElementById('newPlaylistName');
-        const musicAddError = document.getElementById('musicAddError');
-        const musicAddSuccess = document.getElementById('musicAddSuccess');
-
-        const playlistsSection = document.getElementById('playlistsSection');
-        const playlistGrid = document.getElementById('playlistGrid');
-        const noPlaylistsMessage = document.getElementById('noPlaylistsMessage');
-        const showCreatePlaylistFormButton = document.getElementById('showCreatePlaylistFormButton');
-        const createPlaylistForm = document.getElementById('createPlaylistForm');
-        const newPlaylistTitleInput = document.getElementById('newPlaylistTitle');
-
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResultsContainer = document.getElementById('searchResults');
-
+        // Global state
         let currentUser = null;
-        let currentPlayQueue = [];
+        let currentUserData = null;
+        let currentPlaylist = []; // For the player
         let currentTrackIndex = 0;
-        let userPlaylists = [];
+        let allUserSongs = []; // For searching, could be large
+        let userPlaylists = {};
 
 
-        // --- Utility Functions ---
-        function showForm(formContainer) {
-            formContainer.classList.add('active');
-        }
-        function hideForm(formContainer) {
-            formContainer.classList.remove('active');
-        }
-        function clearErrors() {
-            loginError.textContent = '';
-            registerError.textContent = '';
-            profileEditError.textContent = '';
-            profileEditSuccess.textContent = '';
-            musicAddError.textContent = '';
-            musicAddSuccess.textContent = '';
+        // --- UTILITY FUNCTIONS ---
+        function displayMessage(elementId, message, isError = true) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.style.color = isError ? '#ff4d4d' : '#4CAF50'; // Red for error, green for success
+                element.classList.remove('hidden');
+                setTimeout(() => element.classList.add('hidden'), 5000);
+            }
         }
 
-        // Cloudinary Upload Function
         async function uploadToCloudinary(file) {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', cloudinaryPreset);
 
             try {
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`, {
+                const response = await fetch(cloudinaryUploadURL, {
                     method: 'POST',
                     body: formData
                 });
@@ -858,797 +993,793 @@
                 if (data.secure_url) {
                     return data.secure_url;
                 } else {
-                    throw new Error(data.error ? data.error.message : 'Cloudinary upload failed');
+                    throw new Error(data.error?.message || 'Cloudinary upload failed');
                 }
             } catch (error) {
                 console.error("Cloudinary Upload Error:", error);
-                return null;
+                throw error;
             }
         }
 
+        async function uploadToFirebaseStorage(file, path) {
+            const fileRef = storageRef(storage, path);
+            const uploadTask = uploadBytesResumable(fileRef, file);
 
-        // --- Authentication ---
-        onAuthStateChanged(auth, (user) => {
-            clearErrors();
+            return new Promise((resolve, reject) => {
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                        // You could update a progress bar UI element here
+                    },
+                    (error) => {
+                        console.error("Firebase Storage Upload Error:", error);
+                        reject(error);
+                    },
+                    async () => {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        resolve(downloadURL);
+                    }
+                );
+            });
+        }
+
+        function formatDateForInput(dateString) { // yyyy-mm-dd
+            if (!dateString) return '';
+            // Assuming dateString is dd/mm/yyyy from DB or needs conversion
+            // For now, if it's already yyyy-mm-dd, it's fine.
+            // If it's a timestamp or another format, convert it.
+            // Firebase typically stores dates as strings or timestamps. Let's assume it's yyyy-mm-dd
+            return dateString;
+        }
+        function formatInputDateForDB(inputDate) { // from yyyy-mm-dd from input
+            return inputDate; // Assuming stored as yyyy-mm-dd
+        }
+
+
+        // --- AUTHENTICATION ---
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                authScreen.classList.add('hidden');
-                appWrapper.classList.remove('hidden');
-                loginFormContainer.classList.remove('active');
-                registerFormContainer.classList.remove('active');
-                loadUserData(user.uid);
-                loadUserPlaylists(user.uid);
-                navigateToSection('homeSection'); // Default to home
-                loadHomeContent();
+                await fetchCurrentUserData();
+                landingView.classList.add('hidden');
+                authFormsContainer.classList.remove('visible');
+                authFormsContainer.classList.add('hidden');
+                mainAppView.classList.remove('hidden');
+                showView('homeViewContent'); // Default view
+                loadUserPlaylists();
+                loadUserMusicForHome();
             } else {
                 currentUser = null;
-                authScreen.classList.remove('hidden');
-                appWrapper.classList.add('hidden');
-                profileModal.classList.remove('active');
-                currentPlayQueue = [];
-                currentTrackIndex = 0;
-                audioPlayer.pause();
-                audioPlayer.src = '';
+                currentUserData = null;
+                mainAppView.classList.add('hidden');
+                authFormsContainer.classList.remove('visible');
+                authFormsContainer.classList.add('hidden'); // ensure forms are hidden
+                landingView.classList.remove('hidden');
+                // Clear any sensitive data from UI
+                if(userProfileImage) userProfileImage.src = "https://via.placeholder.com/50";
+                currentPlaylist = [];
+                allUserSongs = [];
+                userPlaylists = {};
+                if (audioPlayer) audioPlayer.pause();
+
             }
         });
 
-        showLoginButton.addEventListener('click', () => { clearErrors(); showForm(loginFormContainer); });
-        showRegisterButton.addEventListener('click', () => { clearErrors(); showForm(registerFormContainer); });
+        document.getElementById('showLoginBtn').addEventListener('click', () => {
+            authFormsContainer.classList.add('visible');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
 
-        document.querySelectorAll('.closeButton').forEach(button => {
-            button.addEventListener('click', () => {
-                hideForm(document.getElementById(button.dataset.targetForm));
+        document.getElementById('showRegisterBtn').addEventListener('click', () => {
+            authFormsContainer.classList.add('visible');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        authFormsContainer.addEventListener('click', (e) => { // Close modal if background is clicked
+            if (e.target === authFormsContainer) {
+                authFormsContainer.classList.remove('visible');
+            }
+        });
+
+        document.querySelectorAll('.toggleFormLink').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetFormId = e.target.dataset.form;
+                if (targetFormId === 'registerForm') {
+                    loginForm.classList.add('hidden');
+                    registerForm.classList.remove('hidden');
+                } else {
+                    registerForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                }
             });
         });
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = loginForm.loginEmail.value;
-            const password = loginForm.loginPassword.value;
-            loginError.textContent = '';
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle UI update
+                // Auth state change will handle UI update
+                loginForm.reset();
             } catch (error) {
                 console.error("Login error:", error);
-                loginError.textContent = error.message.replace('Firebase: ', '');
+                displayMessage('loginError', error.message);
             }
         });
 
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const fullName = registerForm.registerFullName.value;
-            const username = registerForm.registerUsername.value;
-            const email = registerForm.registerEmail.value;
-            const password = registerForm.registerPassword.value;
-            const gender = registerForm.registerGender.value;
-            const dob = registerForm.registerDob.value;
-            const profilePicFile = registerForm.registerProfilePic.files[0];
-            registerError.textContent = '';
+            const fullName = document.getElementById('registerFullName').value;
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const gender = document.getElementById('registerGender').value;
+            const dob = document.getElementById('registerDob').value; // yyyy-mm-dd
+            const profilePicFile = document.getElementById('registerProfilePic').files[0];
+
+            if (!fullName || !username || !email || !password || !dob) {
+                 displayMessage('registerError', "Please fill all required fields.");
+                 return;
+            }
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                let profileImageUrl = "https://via.placeholder.com/100"; // Default
+                let profilePictureUrl = "https://via.placeholder.com/150/000000/FFFFFF/?text=User"; // Default
                 if (profilePicFile) {
-                    const uploadedUrl = await uploadToCloudinary(profilePicFile);
-                    if (uploadedUrl) profileImageUrl = uploadedUrl;
+                    profilePictureUrl = await uploadToCloudinary(profilePicFile);
                 }
 
-                // Save additional user info to Realtime Database
-                await set(ref(database, 'users/' + user.uid), {
+                const userData = {
                     uid: user.uid,
-                    fullName: fullName,
-                    username: username,
-                    email: email,
-                    gender: gender,
-                    dob: dob,
-                    profileImageUrl: profileImageUrl,
-                    createdAt: new Date().toISOString()
-                });
+                    fullName,
+                    username,
+                    email,
+                    gender,
+                    dob: formatInputDateForDB(dob),
+                    profilePictureUrl,
+                    joinedAt: serverTimestamp()
+                };
 
-                await updateProfile(user, { displayName: username, photoURL: profileImageUrl });
-                // onAuthStateChanged will handle UI update
-
+                await set(ref(database, `users/${user.uid}`), userData);
+                registerForm.reset();
+                // Auth state change will handle UI update
             } catch (error) {
                 console.error("Registration error:", error);
-                registerError.textContent = error.message.replace('Firebase: ', '');
+                displayMessage('registerError', error.message);
             }
         });
 
-        logoutButton.addEventListener('click', async () => {
+        document.getElementById('logoutButton').addEventListener('click', async () => {
             try {
                 await signOut(auth);
             } catch (error) {
                 console.error("Logout error:", error);
             }
         });
-        mobileLogoutButton.addEventListener('click', async () => { // For mobile menu
+        document.getElementById('logoutButtonMobile').addEventListener('click', async () => {
             try {
                 await signOut(auth);
-                mobileNavMenu.classList.remove('open'); // Close menu on logout
+                 mobileMenu.classList.remove('open'); // Close menu on logout
             } catch (error) {
                 console.error("Logout error:", error);
             }
         });
 
 
-        // --- Profile Management ---
-        headerProfilePic.addEventListener('click', () => {
+        // --- USER PROFILE ---
+        async function fetchCurrentUserData() {
             if (!currentUser) return;
-            clearErrors();
-            profileEditSuccess.textContent = ''; // Clear previous success messages
-            // Populate modal with current user data
-            get(child(ref(database), `users/${currentUser.uid}`)).then((snapshot) => {
+            try {
+                const snapshot = await get(child(ref(database), `users/${currentUser.uid}`));
                 if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    profileEditFullName.value = userData.fullName || '';
-                    profileEditUsername.value = userData.username || '';
-                    profileEditGender.value = userData.gender || '';
-                    profileEditDob.value = userData.dob || '';
-                    profileModalPreview.src = userData.profileImageUrl || 'https://via.placeholder.com/100';
+                    currentUserData = snapshot.val();
+                    userProfileImage.src = currentUserData.profilePictureUrl || "https://via.placeholder.com/50";
+                    // Pre-fill profile edit form
+                    document.getElementById('editFullName').value = currentUserData.fullName || '';
+                    document.getElementById('editUsername').value = currentUserData.username || '';
+                    document.getElementById('editGender').value = currentUserData.gender || 'male';
+                    document.getElementById('editDob').value = formatDateForInput(currentUserData.dob);
+                    document.getElementById('editCurrentProfilePic').src = currentUserData.profilePictureUrl || "https://via.placeholder.com/100";
+
+                } else {
+                    console.log("No user data found!");
                 }
-            });
-            profileModal.classList.add('active');
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        }
+
+        profileArea.addEventListener('click', () => {
+            if (currentUserData) { // Ensure data is loaded
+                 // Re-fetch fresh data or ensure form is up-to-date if it could change elsewhere
+                document.getElementById('editFullName').value = currentUserData.fullName || '';
+                document.getElementById('editUsername').value = currentUserData.username || '';
+                document.getElementById('editGender').value = currentUserData.gender || 'male';
+                document.getElementById('editDob').value = formatDateForInput(currentUserData.dob);
+                document.getElementById('editCurrentProfilePic').src = currentUserData.profilePictureUrl || "https://via.placeholder.com/100";
+                profileEditModal.classList.add('visible');
+            }
         });
 
-        profileEditForm.addEventListener('submit', async (e) => {
+        document.getElementById('cancelProfileEdit').addEventListener('click', () => {
+            profileEditModal.classList.remove('visible');
+        });
+
+        document.getElementById('profileEditForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
 
-            const newFullName = profileEditFullName.value;
-            const newUsername = profileEditUsername.value;
-            const newGender = profileEditGender.value;
-            const newDob = profileEditDob.value;
-            const newProfilePicFile = profileEditForm.profileEditProfilePic.files[0];
-            profileEditError.textContent = '';
-            profileEditSuccess.textContent = '';
+            const updatedData = {
+                fullName: document.getElementById('editFullName').value,
+                username: document.getElementById('editUsername').value,
+                gender: document.getElementById('editGender').value,
+                dob: formatInputDateForDB(document.getElementById('editDob').value),
+            };
+
+            const newProfilePicFile = document.getElementById('editProfilePicFile').files[0];
 
             try {
-                let newProfileImageUrl = profileModalPreview.src;
                 if (newProfilePicFile) {
-                    const uploadedUrl = await uploadToCloudinary(newProfilePicFile);
-                    if (uploadedUrl) newProfileImageUrl = uploadedUrl;
-                    else throw new Error("Profile picture upload failed.");
+                    displayMessage('profileEditMessage', 'Uploading new picture...', false);
+                    updatedData.profilePictureUrl = await uploadToCloudinary(newProfilePicFile);
                 }
 
-                const updates = {
-                    fullName: newFullName,
-                    username: newUsername,
-                    gender: newGender,
-                    dob: newDob,
-                    profileImageUrl: newProfileImageUrl
-                };
-
-                await update(ref(database, 'users/' + currentUser.uid), updates);
-                await updateProfile(auth.currentUser, {
-                    displayName: newUsername,
-                    photoURL: newProfileImageUrl
-                });
-
-                headerProfilePic.src = newProfileImageUrl; // Update header icon immediately
-                profileEditSuccess.textContent = "Profile updated successfully!";
-                setTimeout(() => { profileModal.classList.remove('active'); profileEditSuccess.textContent = '';}, 2000);
-
+                await update(ref(database, `users/${currentUser.uid}`), updatedData);
+                await fetchCurrentUserData(); // Refresh data
+                displayMessage('profileEditMessage', 'Profile updated successfully!', false);
+                setTimeout(() => {
+                    profileEditModal.classList.remove('visible');
+                    document.getElementById('editProfilePicFile').value = ''; // Clear file input
+                }, 1500);
             } catch (error) {
                 console.error("Profile update error:", error);
-                profileEditError.textContent = error.message;
+                displayMessage('profileEditMessage', error.message);
             }
         });
 
-        async function loadUserData(uid) {
-            const userRef = ref(database, 'users/' + uid);
-            onValue(userRef, (snapshot) => { // Use onValue for real-time updates if desired
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    headerProfilePic.src = userData.profileImageUrl || 'https://via.placeholder.com/100';
-                    // Potentially update other UI elements if needed
+
+        // --- NAVIGATION & VIEW MANAGEMENT ---
+        function showView(viewId) {
+            contentSections.forEach(section => section.classList.add('hidden'));
+            const activeSection = document.getElementById(viewId);
+            if (activeSection) activeSection.classList.remove('hidden');
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.view === viewId) {
+                    link.classList.add('active');
                 }
             });
+            // Specific actions for views
+            if (viewId === 'homeViewContent') loadUserMusicForHome();
+            if (viewId === 'playlistsViewContent') {
+                loadUserPlaylists();
+                document.getElementById('playlistSongsView').classList.add('hidden'); // Hide song list
+                document.getElementById('playlistGrid').classList.remove('hidden'); // Show playlist grid
+                document.getElementById('showCreatePlaylistBtn').classList.remove('hidden');
+            }
+            if (viewId === 'musicAddViewContent') populatePlaylistDropdown('addSongPlaylist');
+
         }
-
-
-        // --- Navigation ---
-        mobileHamburgerButton.addEventListener('click', () => {
-            mobileNavMenu.classList.toggle('open');
-        });
 
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const sectionId = link.dataset.section;
-                navigateToSection(sectionId);
-                mobileNavMenu.classList.remove('open'); // Close mobile menu if open
-
-                // Update active class for nav links
-                navLinks.forEach(nav => nav.classList.remove('active'));
-                document.querySelectorAll(`.navLink[data-section="${sectionId}"]`).forEach(activeLink => activeLink.classList.add('active'));
+                const viewId = e.target.closest('.navLink').dataset.view;
+                if (viewId) {
+                    showView(viewId);
+                    if(mobileMenu.classList.contains('open')) mobileMenu.classList.remove('open'); // Close mobile menu if open
+                }
             });
         });
 
-        function navigateToSection(sectionId) {
-            contentSections.forEach(section => {
-                section.classList.remove('active');
-            });
-            const activeSection = document.getElementById(sectionId);
-            if (activeSection) {
-                activeSection.classList.add('active');
-                // Load content specific to the section
-                if (sectionId === 'homeSection') loadHomeContent();
-                else if (sectionId === 'playlistsSection') renderPlaylists();
-                else if (sectionId === 'musicAddSection') populatePlaylistDropdownForMusicAdd();
-                else if (sectionId === 'searchSection') searchResultsContainer.innerHTML = '<p>Start typing to search for music across all users.</p>'; // Reset search
+        hamburgerIcon.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+        mobileMenuNavClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+        // Close mobile menu if clicking outside of it (optional)
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && !hamburgerIcon.contains(e.target)) {
+                mobileMenu.classList.remove('open');
             }
-        }
+        });
 
 
-        // --- Home Section & Music Player ---
-        function loadHomeContent() {
-            if (!currentUser) return;
-            // For now, let's try to load all songs by this user, or a default "library"
-            // A more robust system would load songs from a selected playlist
-            // Let's assume we have a global `currentPlayQueue` that gets populated by selecting a playlist or search
-            if (currentPlayQueue.length === 0) {
-                // Try to load user's "All Music" or first playlist as default
-                const songsRef = query(ref(database, 'songs'), orderByChild('userId'), equalTo(currentUser.uid));
-                get(songsRef).then(snapshot => {
-                    if (snapshot.exists()) {
-                        const songs = [];
-                        snapshot.forEach(childSnapshot => {
-                            songs.push({ id: childSnapshot.key, ...childSnapshot.val() });
-                        });
-                        currentPlayQueue = songs;
-                        currentTrackIndex = 0;
-                        if (songs.length > 0) renderPlayerAndQueue();
-                        else renderNoMusicMessage();
-                    } else {
-                         renderNoMusicMessage();
-                    }
-                }).catch(error => {
-                    console.error("Error fetching initial songs:", error);
-                    renderNoMusicMessage();
-                });
-
-            } else {
-                renderPlayerAndQueue();
-            }
-        }
-
-        function renderNoMusicMessage() {
-            homeMusicContent.innerHTML = `
-                <div class="noMusicMessage">
-                    <i class="fas fa-music"></i>
-                    <p>Your music library is empty.</p>
-                    <button id="goAddMusicButton">Add Your First Song!</button>
-                </div>`;
-            document.getElementById('goAddMusicButton')?.addEventListener('click', () => navigateToSection('musicAddSection'));
-        }
-
-        function renderPlayerAndQueue() {
-            if (currentPlayQueue.length === 0 || currentTrackIndex >= currentPlayQueue.length) {
-                renderNoMusicMessage();
-                return;
-            }
-            const track = currentPlayQueue[currentTrackIndex];
-            if (!track) {
-                 renderNoMusicMessage(); return;
-            }
-
-            homeMusicContent.innerHTML = `
-                <div class="musicPlayerContainer">
-                    <img src="${track.imageUrl || 'https://via.placeholder.com/300'}" alt="${track.name}" class="musicCover" id="playerCover">
-                    <div class="musicInfo">
-                        <h3 id="playerName">${track.name || 'Unknown Title'}</h3>
-                        <p id="playerArtist">${track.artist || 'Unknown Artist'}</p>
-                    </div>
-                    <div class="musicProgress" id="musicProgressContainer">
-                        <div class="musicProgressBar" id="musicProgressBar"></div>
-                    </div>
-                    <div class="timeDisplay">
-                        <span id="currentTime">0:00</span>
-                        <span id="totalDuration">0:00</span>
-                    </div>
-                    <div class="musicControls">
-                        <button id="prevButton"><i class="fas fa-step-backward"></i></button>
-                        <button id="playPauseButton" class="playPauseButton"><i class="fas fa-play"></i></button>
-                        <button id="nextButton"><i class="fas fa-step-forward"></i></button>
-                    </div>
-                </div>
-                <div class="musicList" id="homeQueueList">
-                    <h4>Up Next:</h4>
-                    </div>
-            `;
-
-            loadTrack(track);
-            renderQueueList('homeQueueList');
-            setupPlayerControls();
-        }
-
-        function renderQueueList(containerId) {
-            const queueListContainer = document.getElementById(containerId);
-            if (!queueListContainer) return;
-            queueListContainer.innerHTML = '<h4>Up Next:</h4>'; // Reset header
-             if (currentPlayQueue.length <= 1) {
-                queueListContainer.innerHTML = ''; // No "Up Next" if only one or no song
-                return;
-            }
-
-            currentPlayQueue.forEach((song, index) => {
-                if (index === currentTrackIndex && containerId === 'homeQueueList') return; // Don't show current playing in "up next"
-
-                const item = document.createElement('div');
-                item.classList.add('musicListItem');
-                if (index === currentTrackIndex) item.classList.add('playing');
-                item.dataset.index = index;
-                item.innerHTML = `
-                    <img src="${song.imageUrl || 'https://via.placeholder.com/50'}" alt="${song.name}">
-                    <div class="musicListItemInfo">
-                        <h4>${song.name}</h4>
-                        <p>${song.artist || 'Unknown Artist'}</p>
-                    </div>
-                `;
-                item.addEventListener('click', () => {
-                    playTrackFromQueue(index);
-                });
-                queueListContainer.appendChild(item);
-            });
-        }
-
-
-        function loadTrack(track) {
-            if (!track || !track.audioUrl) {
-                console.error("Track data or audio URL missing:", track);
-                // Potentially play next or show error
-                if(currentPlayQueue.length > 0) playNext();
-                else renderNoMusicMessage();
-                return;
-            }
-            document.getElementById('playerCover').src = track.imageUrl || 'https://via.placeholder.com/300';
-            document.getElementById('playerName').textContent = track.name || 'Unknown Title';
-            document.getElementById('playerArtist').textContent = track.artist || 'Unknown Artist';
-            audioPlayer.src = track.audioUrl;
-            // Reset progress bar and time
-            document.getElementById('musicProgressBar').style.width = '0%';
-            document.getElementById('currentTime').textContent = '0:00';
-            document.getElementById('totalDuration').textContent = '0:00';
-
-            // Update active item in queue list
-            document.querySelectorAll('#homeQueueList .musicListItem.playing').forEach(el => el.classList.remove('playing'));
-            const currentQueueItem = document.querySelector(`#homeQueueList .musicListItem[data-index="${currentTrackIndex}"]`);
-            if (currentQueueItem) currentQueueItem.classList.add('playing');
-        }
-
-        function setupPlayerControls() {
-            const playPauseBtn = document.getElementById('playPauseButton');
-            const prevBtn = document.getElementById('prevButton');
-            const nextBtn = document.getElementById('nextButton');
-            const progressContainer = document.getElementById('musicProgressContainer');
-
-            playPauseBtn.onclick = togglePlayPause;
-            prevBtn.onclick = playPrev;
-            nextBtn.onclick = playNext;
-
-            audioPlayer.ontimeupdate = updateProgress;
-            audioPlayer.onloadedmetadata = () => {
-                document.getElementById('totalDuration').textContent = formatTime(audioPlayer.duration);
-            };
-            audioPlayer.onended = playNext; // Autoplay next song
-
-            progressContainer.onclick = (e) => {
-                const width = progressContainer.clientWidth;
-                const clickX = e.offsetX;
-                audioPlayer.currentTime = (clickX / width) * audioPlayer.duration;
-            };
-        }
-
-        function togglePlayPause() {
-            const playPauseBtnIcon = document.querySelector('#playPauseButton i');
-            if (audioPlayer.paused || audioPlayer.ended) {
-                audioPlayer.play().catch(e => console.error("Play error:", e));
-                playPauseBtnIcon.classList.remove('fa-play');
-                playPauseBtnIcon.classList.add('fa-pause');
-            } else {
-                audioPlayer.pause();
-                playPauseBtnIcon.classList.remove('fa-pause');
-                playPauseBtnIcon.classList.add('fa-play');
-            }
-        }
-
-        function playNext() {
-            currentTrackIndex++;
-            if (currentTrackIndex >= currentPlayQueue.length) {
-                currentTrackIndex = 0; // Loop back to start or stop
-                if (currentPlayQueue.length === 0) { // if queue became empty
-                    renderNoMusicMessage();
-                    audioPlayer.pause();
-                    audioPlayer.src = '';
-                    return;
-                }
-            }
-            if (currentPlayQueue[currentTrackIndex]) {
-                loadTrack(currentPlayQueue[currentTrackIndex]);
-                audioPlayer.play().catch(e => console.error("Play error:", e));
-                 if(document.querySelector('#playPauseButton i')) {
-                    document.querySelector('#playPauseButton i').classList.remove('fa-play');
-                    document.querySelector('#playPauseButton i').classList.add('fa-pause');
-                }
-                renderQueueList('homeQueueList'); // Re-render queue to update "playing" state visual
-            } else if (currentPlayQueue.length > 0) { // If somehow index is bad but queue not empty, reset
-                 currentTrackIndex = 0;
-                 playNext();
-            }
-        }
-
-        function playPrev() {
-            currentTrackIndex--;
-            if (currentTrackIndex < 0) {
-                currentTrackIndex = currentPlayQueue.length - 1; // Loop to end
-                 if (currentTrackIndex < 0) currentTrackIndex = 0; // handles empty or single song queue
-            }
-             if (currentPlayQueue[currentTrackIndex]) {
-                loadTrack(currentPlayQueue[currentTrackIndex]);
-                audioPlayer.play().catch(e => console.error("Play error:", e));
-                if(document.querySelector('#playPauseButton i')) {
-                    document.querySelector('#playPauseButton i').classList.remove('fa-play');
-                    document.querySelector('#playPauseButton i').classList.add('fa-pause');
-                }
-                 renderQueueList('homeQueueList');
-            } else if (currentPlayQueue.length > 0) {
-                currentTrackIndex = 0;
-                playPrev();
-            }
-        }
-
-        function playTrackFromQueue(index) {
-            currentTrackIndex = index;
-            if (currentPlayQueue[currentTrackIndex]) {
-                loadTrack(currentPlayQueue[currentTrackIndex]);
-                audioPlayer.play().catch(e => console.error("Play error:", e));
-                 if(document.querySelector('#playPauseButton i')) {
-                    document.querySelector('#playPauseButton i').classList.remove('fa-play');
-                    document.querySelector('#playPauseButton i').classList.add('fa-pause');
-                 }
-                 renderQueueList('homeQueueList'); // Re-render queue to update "playing" state visual
-                 navigateToSection('homeSection'); // Switch to home view if not already there
-            }
-        }
-
-
-        function updateProgress() {
-            const { duration, currentTime } = audioPlayer;
-            const progressPercent = (currentTime / duration) * 100;
-            document.getElementById('musicProgressBar').style.width = `${progressPercent}%`;
-            document.getElementById('currentTime').textContent = formatTime(currentTime);
-            if(duration && !isNaN(duration)){ // Update total duration if it was NaN initially
-                 document.getElementById('totalDuration').textContent = formatTime(duration);
-            }
-        }
-
+        // --- MUSIC PLAYER ---
         function formatTime(seconds) {
-            if (isNaN(seconds) || seconds === Infinity) return "0:00";
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            playerTotalTime.textContent = formatTime(audioPlayer.duration);
+        });
 
-        // --- Music Add Section ---
-        musicCoverImageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    musicCoverPreview.src = event.target.result;
-                    musicCoverPreview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+        audioPlayer.addEventListener('timeupdate', () => {
+            playerCurrentTime.textContent = formatTime(audioPlayer.currentTime);
+            const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            playerProgressBar.style.width = `${progressPercent}%`;
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+            playNextTrack();
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             } else {
-                musicCoverPreview.style.display = 'none';
+                audioPlayer.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             }
         });
 
-        async function populatePlaylistDropdownForMusicAdd() {
-            if (!currentUser) return;
-            musicPlaylistSelect.innerHTML = '<option value="">Select Playlist</option><option value="_CREATE_NEW_">-- Create New Playlist --</option>'; // Reset
-            const playlistsRef = query(ref(database, 'playlists'), orderByChild('userId'), equalTo(currentUser.uid));
-            get(playlistsRef).then(snapshot => {
-                if (snapshot.exists()) {
-                    userPlaylists = []; // Update local cache
-                    snapshot.forEach(childSnapshot => {
-                        const playlist = { id: childSnapshot.key, ...childSnapshot.val() };
-                        userPlaylists.push(playlist);
-                        const option = document.createElement('option');
-                        option.value = playlist.id;
-                        option.textContent = playlist.name;
-                        musicPlaylistSelect.appendChild(option);
+        prevTrackBtn.addEventListener('click', () => {
+            if (currentPlaylist.length > 0) {
+                currentTrackIndex = (currentTrackIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+                loadTrack(currentTrackIndex);
+            }
+        });
+
+        nextTrackBtn.addEventListener('click', playNextTrack);
+
+        function playNextTrack() {
+             if (currentPlaylist.length > 0) {
+                currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.length;
+                loadTrack(currentTrackIndex);
+            }
+        }
+
+        playerProgress.addEventListener('click', (e) => {
+            if (audioPlayer.duration) {
+                const progressWidth = playerProgress.clientWidth;
+                const clickX = e.offsetX;
+                audioPlayer.currentTime = (clickX / progressWidth) * audioPlayer.duration;
+            }
+        });
+
+        function loadTrack(index, playImmediately = true) {
+            if (!currentPlaylist || index < 0 || index >= currentPlaylist.length) {
+                console.log("Track index out of bounds or no playlist.");
+                // Optionally stop player or show message
+                homeMusicPlayer.classList.add('hidden'); // Hide player if no track
+                return;
+            }
+            homeMusicPlayer.classList.remove('hidden');
+
+            const track = currentPlaylist[index];
+            playerAlbumArt.src = track.albumArtUrl || 'https://via.placeholder.com/300';
+            playerSongTitle.textContent = track.title;
+            playerArtistName.textContent = track.artistName || 'Unknown Artist';
+            audioPlayer.src = track.audioUrl;
+
+            if (playImmediately) {
+                audioPlayer.play()
+                    .then(() => playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>')
+                    .catch(error => {
+                        console.error("Error playing audio:", error);
+                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        // Display error to user potentially
                     });
-                }
-            });
+            } else {
+                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function playSongFromList(songId) {
+            // Find the song in allUserSongs or currently displayed list
+            const song = allUserSongs.find(s => s.id === songId);
+            if (song) {
+                // For simplicity, clicking a song from a list makes it the current "playlist" of one.
+                // Or, if it's part of a displayed playlist (e.g., from Playlists view), set that as currentPlaylist.
+                // For now, treat as a single song play.
+                currentPlaylist = [song];
+                currentTrackIndex = 0;
+                loadTrack(currentTrackIndex);
+            }
         }
 
 
+        // --- MUSIC MANAGEMENT (HOME, ADD, PLAYLISTS) ---
+        async function loadUserMusicForHome() {
+            if (!currentUser) return;
+            const songsRef = ref(database, 'songs');
+            onValue(songsRef, (snapshot) => { // Listen for real-time updates
+                allUserSongs = []; // Reset for fresh load
+                homeMusicList.innerHTML = ''; // Clear current list
+                if (snapshot.exists()) {
+                    snapshot.forEach(childSnapshot => {
+                        const song = { id: childSnapshot.key, ...childSnapshot.val() };
+                        // For now, "Home" shows all songs uploaded by the current user.
+                        // The brief mentioned "register olan herkeste olan muzikleri aratmak olacak" for search
+                        // but "Homede eger listede muzik yoksa" implies user's own music focus for home.
+                        // I'll list songs by current user on home.
+                        if (song.uploaderUid === currentUser.uid) {
+                           allUserSongs.push(song);
+                        }
+                    });
+
+                    if (allUserSongs.length > 0) {
+                        homeNoMusicPrompt.classList.add('hidden');
+                        allUserSongs.forEach(song => renderSongItem(song, homeMusicList));
+                        // Optionally set the first song for the player if no song is playing
+                        if (audioPlayer.paused && !audioPlayer.src && allUserSongs.length > 0) {
+                            currentPlaylist = [...allUserSongs]; // Set home list as current playlist
+                            currentTrackIndex = 0;
+                            loadTrack(currentTrackIndex, false); // Load first track but don't auto-play
+                        }
+                    } else {
+                        homeNoMusicPrompt.classList.remove('hidden');
+                        homeMusicPlayer.classList.add('hidden'); // Hide player if no music
+                    }
+                } else {
+                    homeNoMusicPrompt.classList.remove('hidden');
+                    homeMusicPlayer.classList.add('hidden');
+                }
+                // Also refresh all songs list used for search
+                fetchAllSongsForSearch(); // If search is across all users
+            });
+        }
+
+        function renderSongItem(song, containerElement) {
+            const item = document.createElement('div');
+            item.classList.add('musicListItem');
+            item.dataset.songId = song.id;
+            item.innerHTML = `
+                <img src="${song.albumArtUrl || 'https://via.placeholder.com/150'}" alt="${song.title}">
+                <div class="musicListItemTitle">${song.title}</div>
+                <div class="musicListItemArtist">${song.artistName || 'Unknown Artist'}</div>
+            `;
+            item.addEventListener('click', () => playSongFromList(song.id));
+            containerElement.appendChild(item);
+        }
+
+        promptGoToAddMusic.addEventListener('click', () => showView('musicAddViewContent'));
+
+
+        // Music Add Form
+        const musicAddForm = document.getElementById('musicAddForm');
         musicAddForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentUser) return;
-
-            const name = musicNameInput.value.trim();
-            const artist = musicArtistInput.value.trim();
-            const audioUrl = musicFileUrlInput.value.trim();
-            const coverFile = musicCoverImageInput.files[0];
-            let playlistId = musicPlaylistSelect.value;
-            const newPlaylistName = newPlaylistNameInput.value.trim();
-
-            musicAddError.textContent = '';
-            musicAddSuccess.textContent = '';
-
-            if (!name || !audioUrl || !coverFile) {
-                musicAddError.textContent = "Music title, audio URL, and cover image are required.";
+            if (!currentUser) {
+                displayMessage('musicAddMessage', "You must be logged in to add music.");
                 return;
             }
 
-            let finalPlaylistId = playlistId;
-            let finalPlaylistName = "";
+            const title = document.getElementById('addSongTitle').value;
+            const artistName = document.getElementById('addArtistName').value;
+            const albumArtFile = document.getElementById('addAlbumArt').files[0];
+            const musicFile = document.getElementById('addMusicFile').files[0];
+            const selectedPlaylistId = document.getElementById('addSongPlaylist').value;
+
+            if (!title || !albumArtFile || !musicFile) {
+                displayMessage('musicAddMessage', "Title, Album Art, and Music File are required.");
+                return;
+            }
+            if (!selectedPlaylistId) {
+                 displayMessage('musicAddMessage', "Please select or create a playlist.");
+                return;
+            }
+
+            displayMessage('musicAddMessage', "Uploading... Please wait.", false);
 
             try {
-                // Handle playlist
-                if (playlistId === '_CREATE_NEW_' || (!playlistId && newPlaylistName)) {
-                    finalPlaylistName = newPlaylistName || "My New Playlist"; // Default if new but no name
-                    if (!newPlaylistName && playlistId === '_CREATE_NEW_') {
-                         musicAddError.textContent = "Please enter a name for the new playlist.";
-                         return;
-                    }
-                    const newPlaylistRef = push(ref(database, 'playlists'));
-                    finalPlaylistId = newPlaylistRef.key;
-                    await set(newPlaylistRef, {
-                        userId: currentUser.uid,
-                        name: finalPlaylistName,
-                        createdAt: new Date().toISOString(),
-                        songs: {} // Initialize songs object for the new playlist
-                    });
-                    // Add to local cache and dropdown
-                    userPlaylists.push({id: finalPlaylistId, name: finalPlaylistName, userId: currentUser.uid});
-                    populatePlaylistDropdownForMusicAdd(); // Refresh dropdown
-                    musicPlaylistSelect.value = finalPlaylistId; // Select the newly created one
-                } else if (!playlistId && userPlaylists.length === 0) {
-                    // No playlist selected and no existing playlists, create a default "Library"
-                    finalPlaylistName = "Library";
-                    const defaultPlaylistRef = push(ref(database, 'playlists'));
-                    finalPlaylistId = defaultPlaylistRef.key;
-                    await set(defaultPlaylistRef, {
-                        userId: currentUser.uid,
-                        name: finalPlaylistName,
-                        createdAt: new Date().toISOString(),
-                        songs: {}
-                    });
-                     userPlaylists.push({id: finalPlaylistId, name: finalPlaylistName, userId: currentUser.uid});
-                    populatePlaylistDropdownForMusicAdd();
-                    musicPlaylistSelect.value = finalPlaylistId;
-                } else if (!playlistId) {
-                    musicAddError.textContent = "Please select a playlist or create a new one.";
-                    return;
-                }
+                const albumArtUrl = await uploadToCloudinary(albumArtFile);
+                const audioUrl = await uploadToFirebaseStorage(musicFile, `music/${currentUser.uid}/${Date.now()}_${musicFile.name}`);
 
+                const songsListRef = ref(database, 'songs');
+                const newSongRef = push(songsListRef); // Generate a new unique key for the song
 
-                const imageUrl = await uploadToCloudinary(coverFile);
-                if (!imageUrl) throw new Error("Cover image upload failed.");
-
-                const newSongRef = push(ref(database, 'songs'));
-                const songId = newSongRef.key;
                 const songData = {
-                    id: songId,
-                    userId: currentUser.uid,
-                    name: name,
-                    artist: artist,
-                    audioUrl: audioUrl,
-                    imageUrl: imageUrl,
-                    playlistIds: [finalPlaylistId], // Store as an array for potential multiple playlists later
-                    createdAt: new Date().toISOString()
+                    title,
+                    artistName,
+                    albumArtUrl,
+                    audioUrl,
+                    uploaderUid: currentUser.uid,
+                    uploaderName: currentUserData?.username || currentUser.email,
+                    createdAt: serverTimestamp(),
+                    // playlistId: selectedPlaylistId // Store initial playlist
                 };
+
                 await set(newSongRef, songData);
+                const songId = newSongRef.key;
 
-                // Add song to the selected/created playlist
-                await update(ref(database, `playlists/${finalPlaylistId}/songs`), {
-                    [songId]: true // Using songId as key for easy add/remove
-                });
+                // Add song to the selected playlist
+                const playlistSongsRef = ref(database, `playlists/${selectedPlaylistId}/songs/${songId}`);
+                await set(playlistSongsRef, true); // Using true as value to mark song presence
+
+                // Also update a list of playlists the song belongs to, in the song itself (optional, for easier querying)
+                const songPlaylistsRef = ref(database, `songs/${songId}/playlistIds/${selectedPlaylistId}`);
+                await set(songPlaylistsRef, true);
 
 
-                musicAddSuccess.textContent = `"${name}" added successfully ${finalPlaylistName ? 'to playlist "' + finalPlaylistName + '"' : ''}!`;
+                displayMessage('musicAddMessage', "Music added successfully!", false);
                 musicAddForm.reset();
-                musicCoverPreview.style.display = 'none';
-                newPlaylistNameInput.value = '';
-                // Optionally, navigate to home or refresh current view
-                loadHomeContent(); // Refresh home if new music might appear there
-                loadUserPlaylists(currentUser.uid); // Refresh playlist cache
-
+                showView('homeViewContent'); // Go to home to see the new music
             } catch (error) {
-                console.error("Add Music Error:", error);
-                musicAddError.textContent = error.message;
+                console.error("Error adding music:", error);
+                displayMessage('musicAddMessage', `Error: ${error.message}`);
             }
         });
 
+        // Playlists
+        const createPlaylistForm = document.getElementById('createPlaylistForm');
+        const showCreatePlaylistBtn = document.getElementById('showCreatePlaylistBtn');
+        const cancelCreatePlaylistBtn = document.getElementById('cancelCreatePlaylistBtn');
+        const newPlaylistNameInput = document.getElementById('newPlaylistName');
+        const playlistGrid = document.getElementById('playlistGrid');
+        const noPlaylistsPrompt = document.getElementById('noPlaylistsPrompt');
+        const addSongPlaylistSelect = document.getElementById('addSongPlaylist');
+        const showCreatePlaylistFromMusicAdd = document.getElementById('showCreatePlaylistFromMusicAdd');
 
-        // --- Playlists Section ---
-        async function loadUserPlaylists(uid) {
-            const playlistsRef = query(ref(database, 'playlists'), orderByChild('userId'), equalTo(uid));
-            onValue(playlistsRef, (snapshot) => { // onValue for real-time updates
-                userPlaylists = [];
-                if (snapshot.exists()) {
-                    snapshot.forEach(childSnapshot => {
-                        userPlaylists.push({ id: childSnapshot.key, ...childSnapshot.val() });
-                    });
-                }
-                renderPlaylists();
-                populatePlaylistDropdownForMusicAdd(); // Also update dropdown in add music form
-            });
-        }
+        const playlistSongsView = document.getElementById('playlistSongsView');
+        const playlistSongsTitle = document.getElementById('playlistSongsTitle');
+        const backToPlaylistsBtn = document.getElementById('backToPlaylistsBtn');
+        const playlistSongsList = document.getElementById('playlistSongsList');
 
-        function renderPlaylists() {
-            playlistGrid.innerHTML = '';
-            if (userPlaylists.length === 0) {
-                noPlaylistsMessage.classList.remove('hidden');
-            } else {
-                noPlaylistsMessage.classList.add('hidden');
-                userPlaylists.forEach(playlist => {
-                    const playlistItem = document.createElement('div');
-                    playlistItem.classList.add('playlistItem');
-                    playlistItem.dataset.playlistId = playlist.id;
-                    const songCount = playlist.songs ? Object.keys(playlist.songs).length : 0;
-                    playlistItem.innerHTML = `
-                        <i class="fas fa-compact-disc"></i>
-                        <h3>${playlist.name}</h3>
-                        <p>${songCount} song(s)</p>
-                    `;
-                    playlistItem.addEventListener('click', () => loadPlaylistIntoPlayer(playlist.id));
-                    playlistGrid.appendChild(playlistItem);
+
+        showCreatePlaylistBtn.addEventListener('click', () => {
+            createPlaylistForm.classList.remove('hidden');
+            showCreatePlaylistBtn.classList.add('hidden');
+        });
+         showCreatePlaylistFromMusicAdd.addEventListener('click', () => {
+            // This button is on the "Add Music" page. We need a way to create a playlist
+            // and then select it, or handle this flow more smoothly.
+            // For now, let's just prompt:
+            const playlistName = prompt("Enter new playlist name:");
+            if (playlistName && playlistName.trim() !== "" && currentUser) {
+                handleCreatePlaylist(playlistName.trim(), (newPlaylistId) => {
+                    // Automatically select the new playlist in the dropdown
+                    populatePlaylistDropdown('addSongPlaylist', newPlaylistId);
                 });
             }
-        }
+        });
 
-        showCreatePlaylistFormButton.addEventListener('click', () => {
-            createPlaylistForm.classList.toggle('hidden');
-            if (!createPlaylistForm.classList.contains('hidden')) {
-                newPlaylistTitleInput.focus();
-            }
+        cancelCreatePlaylistBtn.addEventListener('click', () => {
+            createPlaylistForm.classList.add('hidden');
+            showCreatePlaylistBtn.classList.remove('hidden');
+            newPlaylistNameInput.value = '';
         });
 
         createPlaylistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentUser) return;
-            const title = newPlaylistTitleInput.value.trim();
-            if (!title) return;
-
-            try {
-                const newPlaylistRef = push(ref(database, 'playlists'));
-                await set(newPlaylistRef, {
-                    userId: currentUser.uid,
-                    name: title,
-                    createdAt: new Date().toISOString(),
-                    songs: {}
-                });
-                newPlaylistTitleInput.value = '';
-                createPlaylistForm.classList.add('hidden');
-                // loadUserPlaylists will update the view due to onValue
-            } catch (error) {
-                console.error("Create Playlist Error:", error);
-                alert("Error creating playlist: " + error.message);
-            }
+            const playlistName = newPlaylistNameInput.value.trim();
+            if (!playlistName || !currentUser) return;
+            handleCreatePlaylist(playlistName);
         });
 
-        async function loadPlaylistIntoPlayer(playlistId) {
-            const playlist = userPlaylists.find(p => p.id === playlistId);
-            if (!playlist || !playlist.songs) {
-                currentPlayQueue = [];
-                currentTrackIndex = 0;
-                renderNoMusicMessage();
-                navigateToSection('homeSection');
-                return;
+        async function handleCreatePlaylist(playlistName, callbackOnSuccess) {
+            try {
+                const playlistsRef = ref(database, 'playlists');
+                const newPlaylistRef = push(playlistsRef);
+                const playlistData = {
+                    name: playlistName,
+                    userId: currentUser.uid,
+                    createdAt: serverTimestamp(),
+                    songs: {} // To store song IDs
+                };
+                await set(newPlaylistRef, playlistData);
+                newPlaylistNameInput.value = '';
+                createPlaylistForm.classList.add('hidden');
+                showCreatePlaylistBtn.classList.remove('hidden');
+                displayMessage('playlistFormMessage', 'Playlist created!', false);
+                if (callbackOnSuccess) callbackOnSuccess(newPlaylistRef.key);
+                // loadUserPlaylists() will be called by onValue listener automatically
+            } catch (error) {
+                console.error("Error creating playlist:", error);
+                displayMessage('playlistFormMessage', `Error: ${error.message}`);
             }
-
-            const songIds = Object.keys(playlist.songs);
-            if (songIds.length === 0) {
-                 currentPlayQueue = [];
-                 currentTrackIndex = 0;
-                 renderNoMusicMessage(); // Show no music if playlist is empty
-                 navigateToSection('homeSection');
-                 return;
-            }
-
-            const songPromises = songIds.map(songId => get(child(ref(database), `songs/${songId}`)));
-            Promise.all(songPromises).then(snapshots => {
-                currentPlayQueue = snapshots
-                    .filter(snap => snap.exists())
-                    .map(snap => ({ id: snap.key, ...snap.val() }));
-                currentTrackIndex = 0;
-                if (currentPlayQueue.length > 0) {
-                    renderPlayerAndQueue();
-                } else {
-                    renderNoMusicMessage();
-                }
-                navigateToSection('homeSection');
-            }).catch(error => {
-                console.error("Error loading playlist songs:", error);
-                renderNoMusicMessage();
-                navigateToSection('homeSection');
-            });
         }
 
-        // --- Search Section ---
-        searchButton.addEventListener('click', performSearch);
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') performSearch();
-        });
+        function loadUserPlaylists() {
+            if (!currentUser) return;
+            const userPlaylistsRef = ref(database, 'playlists');
+            // Query for playlists by current user: orderByChild('userId').equalTo(currentUser.uid)
+            // For simplicity and if rules allow, get all and filter, or structure better.
+            // Let's assume we filter by userId if data isn't too large or structure is /user-playlists/{userId}/{playlistId}
+            // For now, listening to all 'playlists' and filtering client-side or assuming all playlists are user's.
+            // A better structure: `user-playlists/${currentUser.uid}`
+            // Using current structure, filtering client-side for demo:
 
-        async function performSearch() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            searchResultsContainer.innerHTML = '<p>Searching...</p>';
-            if (!searchTerm) {
-                searchResultsContainer.innerHTML = '<p>Please enter a search term.</p>';
-                return;
-            }
-
-            try {
-                // This is a simplified search. For large datasets, Firebase doesn't support
-                // native full-text search well on Realtime Database.
-                // You might need a more complex query or a third-party search service (e.g., Algolia) for production.
-                // This will fetch ALL songs and filter client-side, which is not scalable.
-                // For "search music from everyone registered", we fetch all songs.
-                const songsRef = ref(database, 'songs');
-                const snapshot = await get(songsRef);
-                let results = [];
+            onValue(userPlaylistsRef, (snapshot) => {
+                playlistGrid.innerHTML = '';
+                userPlaylists = {}; // Reset
+                let hasPlaylists = false;
                 if (snapshot.exists()) {
                     snapshot.forEach(childSnapshot => {
-                        const song = { id: childSnapshot.key, ...childSnapshot.val() };
-                        if ((song.name && song.name.toLowerCase().includes(searchTerm)) ||
-                            (song.artist && song.artist.toLowerCase().includes(searchTerm))) {
-                            results.push(song);
+                        const playlist = { id: childSnapshot.key, ...childSnapshot.val() };
+                        if (playlist.userId === currentUser.uid) { // Filter for current user
+                            userPlaylists[playlist.id] = playlist;
+                            renderPlaylistItem(playlist);
+                            hasPlaylists = true;
                         }
                     });
                 }
+                noPlaylistsPrompt.classList.toggle('hidden', hasPlaylists);
+                populatePlaylistDropdown('addSongPlaylist');
 
-                renderSearchResults(results);
+                // Create a default "Library" playlist if none exist and user has songs without a playlist
+                // (This logic is complex; for now, user must create or pick one during upload)
+                // Simpler: if no playlists at all, guide them to create one.
+                if (!hasPlaylists && addSongPlaylistSelect.options.length === 0) {
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.textContent = "Create a playlist first";
+                    option.disabled = true;
+                    addSongPlaylistSelect.innerHTML = ''; // Clear
+                    addSongPlaylistSelect.appendChild(option);
+                } else if (addSongPlaylistSelect.options.length > 0 && addSongPlaylistSelect.options[0].disabled) {
+                    // If "Create playlist first" was there, remove it now that playlists exist
+                    populatePlaylistDropdown('addSongPlaylist');
+                }
 
-            } catch (error) {
-                console.error("Search error:", error);
-                searchResultsContainer.innerHTML = `<p>Error during search: ${error.message}</p>`;
-            }
-        }
 
-        function renderSearchResults(results) {
-            searchResultsContainer.innerHTML = '';
-            if (results.length === 0) {
-                searchResultsContainer.innerHTML = '<p>No songs found matching your search.</p>';
-                return;
-            }
-            results.forEach((song, index) => {
-                const item = document.createElement('div');
-                item.classList.add('musicListItem');
-                item.dataset.songId = song.id; // Use song.id
-                item.innerHTML = `
-                    <img src="${song.imageUrl || 'https://via.placeholder.com/50'}" alt="${song.name}">
-                    <div class="musicListItemInfo">
-                        <h4>${song.name}</h4>
-                        <p>${song.artist || 'Unknown Artist'}</p>
-                    </div>
-                    <button class="playSearchResultButton" data-index="${index}" style="margin-left: auto; background-color: #00ffc3; color: #111; padding: 5px 10px; font-size: 0.8rem;">Play</button>
-                `;
-                // Add event listener to play this song
-                // This needs to set currentPlayQueue to the search results and play the specific song
-                item.querySelector('.playSearchResultButton').addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent triggering outer click if any
-                    currentPlayQueue = [...results]; // Set the play queue to the search results
-                    playTrackFromQueue(parseInt(e.target.dataset.index));
-                });
-                searchResultsContainer.appendChild(item);
             });
         }
 
-        // Initial call if needed (though onAuthStateChanged handles initial load)
-        // navigateToSection('homeSection');
+        function renderPlaylistItem(playlist) {
+            const item = document.createElement('div');
+            item.classList.add('playlistItem');
+            item.dataset.playlistId = playlist.id;
+            item.innerHTML = `
+                <i class="fas fa-music"></i> <h4>${playlist.name}</h4>
+                <p>${Object.keys(playlist.songs || {}).length} songs</p>
+            `;
+            item.addEventListener('click', () => showSongsForPlaylist(playlist.id));
+            playlistGrid.appendChild(item);
+        }
+
+        function populatePlaylistDropdown(selectElementId, selectedId = null) {
+            const select = document.getElementById(selectElementId);
+            if (!select) return;
+            select.innerHTML = ''; // Clear existing options
+
+            const userOwnedPlaylists = Object.values(userPlaylists).filter(p => p.userId === currentUser?.uid);
+
+            if (userOwnedPlaylists.length === 0) {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "No playlists available. Create one.";
+                option.disabled = true;
+                select.appendChild(option);
+                // Disable the actual "Add Music" submit button if no playlist can be chosen.
+                const musicAddSubmitButton = musicAddForm.querySelector('button[type="submit"]');
+                if(musicAddSubmitButton) musicAddSubmitButton.disabled = true;
+                return;
+            } else {
+                 const musicAddSubmitButton = musicAddForm.querySelector('button[type="submit"]');
+                 if(musicAddSubmitButton) musicAddSubmitButton.disabled = false;
+            }
+
+
+            userOwnedPlaylists.forEach(playlist => {
+                const option = document.createElement('option');
+                option.value = playlist.id;
+                option.textContent = playlist.name;
+                if (playlist.id === selectedId) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+             // Create a default "Library" if it's truly the first time and no playlists exist AND music is being added.
+            // This is tricky. User should explicitly create.
+            // For "Music Add m ( hangi playliste eklemek istedigide secilsin eger yokda defaulttan bir library acsin otomatik olarak muzik eklendiginde"
+            // If no playlists, and music add is attempted, auto-create "Library".
+            if (userOwnedPlaylists.length === 0 && selectElementId === 'addSongPlaylist' && !document.getElementById('addSongPlaylist').value) {
+                 // This condition is hard to hit now with the disabled state.
+                 // Let's assume if selectedPlaylistId is not found and it's required, the form validation will catch it.
+                 // The "create new playlist" button is a better approach.
+            }
+        }
+
+        async function showSongsForPlaylist(playlistId) {
+            const playlist = userPlaylists[playlistId];
+            if (!playlist) return;
+
+            playlistSongsTitle.textContent = `Songs in "${playlist.name}"`;
+            playlistSongsList.innerHTML = ''; // Clear previous songs
+
+            const songIds = Object.keys(playlist.songs || {});
+            if (songIds.length === 0) {
+                playlistSongsList.innerHTML = '<p>This playlist is empty.</p>';
+            } else {
+                const songsToLoad = [];
+                for (const songId of songIds) {
+                    const songSnapshot = await get(child(ref(database), `songs/${songId}`));
+                    if (songSnapshot.exists()) {
+                        const songData = { id: songSnapshot.key, ...songSnapshot.val() };
+                        songsToLoad.push(songData);
+                        renderSongItem(songData, playlistSongsList);
+                    }
+                }
+                // Set this playlist for the player
+                currentPlaylist = songsToLoad;
+                currentTrackIndex = 0;
+                if (currentPlaylist.length > 0) {
+                    loadTrack(currentTrackIndex, false); // Load first track, don't autoplay
+                } else {
+                    homeMusicPlayer.classList.add('hidden');
+                }
+            }
+
+            // Hide playlist grid, show song list for this playlist
+            document.getElementById('playlistGrid').classList.add('hidden');
+            document.getElementById('showCreatePlaylistBtn').classList.add('hidden');
+            createPlaylistForm.classList.add('hidden');
+            playlistSongsView.classList.remove('hidden');
+        }
+
+        backToPlaylistsBtn.addEventListener('click', () => {
+            playlistSongsView.classList.add('hidden');
+            document.getElementById('playlistGrid').classList.remove('hidden');
+            document.getElementById('showCreatePlaylistBtn').classList.remove('hidden');
+            loadUserPlaylists(); // Refresh playlist grid (e.g., song counts)
+        });
+
+
+
+        // --- SEARCH ---
+        const searchInput = document.getElementById('searchInput');
+        const searchResultsContainer = document.getElementById('searchResultsContainer');
+        const noSearchResults = document.getElementById('noSearchResults');
+        let allSongsForSearchList = []; // Stores all songs from all users
+
+        async function fetchAllSongsForSearch() {
+            // This fetches ALL songs. For large DBs, this is not scalable.
+            // Consider Firebase functions + specialized search (Algolia, Typesense) or carefully structured queries.
+            const songsRef = ref(database, 'songs');
+            const snapshot = await get(songsRef);
+            allSongsForSearchList = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(childSnapshot => {
+                    allSongsForSearchList.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                });
+            }
+        }
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            searchResultsContainer.innerHTML = '';
+
+            if (!searchTerm) {
+                noSearchResults.classList.add('hidden');
+                return;
+            }
+
+            const results = allSongsForSearchList.filter(song =>
+                song.title?.toLowerCase().includes(searchTerm) ||
+                song.artistName?.toLowerCase().includes(searchTerm) ||
+                song.uploaderName?.toLowerCase().includes(searchTerm)
+            );
+
+            if (results.length > 0) {
+                results.forEach(song => renderSongItem(song, searchResultsContainer));
+                noSearchResults.classList.add('hidden');
+            } else {
+                noSearchResults.classList.remove('hidden');
+            }
+        });
+
+
+        // --- INITIAL LOAD ---
+        // Call functions that need to run on script load after auth state is determined
+        // e.g. fetchAllSongsForSearch() can be called once after login, or periodically
+
+
+        // Make sure everything is set up once DOM is fully loaded (though module script defers by default)
+        // document.addEventListener('DOMContentLoaded', () => { /* already handled by script type=module */ });
 
     </script>
 
 </body>
 </html>
-
-
