@@ -1054,7 +1054,8 @@
             const prevBtn = document.getElementById('prevButton');
             const nextBtn = document.getElementById('nextButton');
             const progressContainer = document.getElementById('musicProgressContainer');
-            playPauseBtn.onclick = togglePlayPause anxiety prevBtn.onclick = playPrev;
+            playPauseBtn.onclick = togglePlayPause;
+            prevBtn.onclick = playPrev;
             nextBtn.onclick = playNext;
             audioPlayer.ontimeupdate = updateProgress;
             audioPlayer.onloadedmetadata = () => {
